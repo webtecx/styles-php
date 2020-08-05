@@ -1,51 +1,47 @@
 <?php
 
-class Styles {
+class Script {
 
     static public $isProd = false;
 
-    static public $css = "";
+    static public $js = "";
 
     static public $minify = true;
 
     static function begin() {
         if (!self::$isProd) {
-            echo '<style>';
+            echo '<script type="text/javascript">';
         }
     }
 
     static function end() {
         if (!self::$isProd) {
-            echo '</style>';
+            echo '</script>';
         }
     }
 
     static function dump() {
-        $spath = './css/styles.css';
+        $spath = './js/scripts.js';
         $vpath = './views/';
 
         file_put_contents($spath, "");
 
         if (self::$isProd) {
 
-            self::$css = "";
+            self::$js = "";
 
             ob_start();
             foreach(scandir($vpath ) as $file) {
                 if ($file == '.' && $file == '..') continue;
-                echo $file, "\n";
                 @include($vpath . $file);
             }
             ob_end_clean();
 
             if (self::$minify) {
-                self::$css = preg_replace('/\/\*((?!\*\/).)*\*\//', '', self::$css);
-                self::$css = preg_replace('/\s{2,}/', ' ', self::$css);
-                self::$css = preg_replace('/\s*([:;{}])\s*/', '$1', self::$css);
-                self::$css = preg_replace('/;}/', '}', self::$css);
+              //..
             }
 
-            file_put_contents($spath, self::$css);
+            file_put_contents($spath, self::$js);
         }
     }
 }
